@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Box, Button, Container } from "@material-ui/core";
+import { Box, Button, Container, Grid } from "@material-ui/core";
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,7 +10,9 @@ import {
 } from "react-router-dom";
 
 //My components
-import QuizPage from "./components/QuizPage.jsx";
+import QuizPage from "./components/QuizPage";
+import QuizMaker from "./components/QuizMaker";
+import { SignIn, SignOut } from "./components/AuthButtons";
 
 //Firebase sdk
 import firebase from "firebase/app";
@@ -37,12 +39,23 @@ function App() {
   const [user] = useAuthState(auth);
 
   return (
-    <Container className="App" maxWidth="sm">
+    <Grid
+      container
+      justify="center"
+      alignItems="center"
+      direction="column"
+      style={{ minHeight: "100vh" }}
+      className="App"
+    >
       <Router>
-        <Box bgcolor="#20821e" py="30px" style={{ minHeight: "100vh" }}>
+        <Box
+          bgcolor="#20821e"
+          py="30px"
+          style={{ width: "80%", minWidth: "300px" }}
+        >
           <Switch>
             <Route exact path="/">
-              {!user && <SignIn />}
+              {!user && <SignIn auth={auth} />}
               {user && <OptionsMenu user={user} />}
             </Route>
             {/* Protected Routes */}
@@ -56,8 +69,8 @@ function App() {
                   )}
                 </Route>
                 <Route path="/create">
-                  <div>create</div>
-                </Route>{" "}
+                  <QuizMaker user={user} auth={auth} firestore={firestore} />
+                </Route>
               </>
             ) : (
               <Redirect to="/" />
@@ -65,32 +78,31 @@ function App() {
           </Switch>
         </Box>
       </Router>
-    </Container>
-  );
-}
-
-function SignIn() {
-  const signInWithGoogle = () => {
-    const provider = new firebase.auth.GoogleAuthProvider();
-    auth.signInWithPopup(provider);
-  };
-
-  return (
-    <Button variant="contained" color="primary" onClick={signInWithGoogle}>
-      Sign In With A Google Account
-    </Button>
+    </Grid>
   );
 }
 
 function OptionsMenu({ user: { displayName } }) {
   return (
     <>
-      <div>{displayName}</div>
-      <Link to="/quiz">
-        <Button variant="contained" color="primary">
-          Quiz Me
-        </Button>
-      </Link>
+      <h1>Hello {displayName}</h1>
+      <Box>
+        <SignOut auth={auth} />
+      </Box>
+      <Box>
+        <Link to="/quiz">
+          <Button variant="contained" color="primary">
+            Quiz Me
+          </Button>
+        </Link>
+      </Box>
+      <Box>
+        <Link to="/create">
+          <Button variant="contained" color="primary">
+            Create a Question
+          </Button>
+        </Link>
+      </Box>
     </>
   );
 }

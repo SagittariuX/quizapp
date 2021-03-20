@@ -22,7 +22,6 @@ const QuizPage = ({ user, auth, firestore }) => {
 
   return (
     <div>
-      <SignOut auth={auth} />
       {questions && (
         <Box mt="20px">
           <div>It's Quiz Time</div>
@@ -43,21 +42,6 @@ const QuizPage = ({ user, auth, firestore }) => {
         </Box>
       )}
     </div>
-  );
-};
-
-const SignOut = ({ auth }) => {
-  return (
-    auth.currentUser && (
-      <Button
-        className="sign-out-btn"
-        variant="contained"
-        color="secondary"
-        onClick={() => auth.signOut()}
-      >
-        Sign Out/Switch Account
-      </Button>
-    )
   );
 };
 
