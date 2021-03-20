@@ -1,6 +1,13 @@
 import React from "react";
 import "./App.css";
-// import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { Box, Button, Container } from "@material-ui/core";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Redirect,
+} from "react-router-dom";
 
 //My components
 import QuizPage from "./components/QuizPage.jsx";
@@ -30,14 +37,35 @@ function App() {
   const [user] = useAuthState(auth);
 
   return (
-    <div className="App">
-      {!user && <SignIn />}
-      {!user ? (
-        <div>Please Sign In</div>
-      ) : (
-        <QuizPage user={user} auth={auth} firestore={firestore} />
-      )}
-    </div>
+    <Container className="App" maxWidth="sm">
+      <Router>
+        <Box bgcolor="#20821e" py="30px" style={{ minHeight: "100vh" }}>
+          <Switch>
+            <Route exact path="/">
+              {!user && <SignIn />}
+              {user && <OptionsMenu user={user} />}
+            </Route>
+            {/* Protected Routes */}
+            {user ? (
+              <>
+                <Route path="/quiz">
+                  {!user ? (
+                    <div>Please Sign In</div>
+                  ) : (
+                    <QuizPage user={user} auth={auth} firestore={firestore} />
+                  )}
+                </Route>
+                <Route path="/create">
+                  <div>create</div>
+                </Route>{" "}
+              </>
+            ) : (
+              <Redirect to="/" />
+            )}
+          </Switch>
+        </Box>
+      </Router>
+    </Container>
   );
 }
 
@@ -48,7 +76,22 @@ function SignIn() {
   };
 
   return (
-    <button onClick={signInWithGoogle}>Sign In With A Google Account</button>
+    <Button variant="contained" color="primary" onClick={signInWithGoogle}>
+      Sign In With A Google Account
+    </Button>
+  );
+}
+
+function OptionsMenu({ user: { displayName } }) {
+  return (
+    <>
+      <div>{displayName}</div>
+      <Link to="/quiz">
+        <Button variant="contained" color="primary">
+          Quiz Me
+        </Button>
+      </Link>
+    </>
   );
 }
 
