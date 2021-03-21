@@ -7,14 +7,17 @@ If the user has proper Google authentication he/she is allowed to submit questio
 All users are allowed to take the quiz and view the result at the end of the quiz.
 
 #Intentions 
+
 This is a quick project for me to learn about React and front-end development.
 This application is designed to be lite.
 
 #Tech Choices
+
 React - Learning experience, fast and dynamic
 Firebase - easy and fast to use/setup (especially with React hook)
 
 #Needed improvements
+
 Currently the quiz take the last 3 questions from the database, need to find a good way to randomly gather questions from firebase.
 Results page could be more informative, UI/UX can be more intuitive.
 
