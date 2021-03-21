@@ -31,13 +31,13 @@ const QuizMaker = ({ firestore }) => {
     answer,
     id,
   }) => {
-    const questionRef = firestore
+    firestore
       .collection("Questions")
       .add({
         question: question,
         answer: answer,
         choices: [choice0, choice1, choice2, choice3],
-        id: id+1,
+        id: id + 1,
       })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
@@ -94,7 +94,7 @@ const QuizMaker = ({ firestore }) => {
   if (true && !haveSubmitted)
     return (
       <>
-        <h3>Please make your question related to or about computer science</h3>
+        <h3>Please make your question about computer science</h3>
         <h3>This is just a casual application</h3>
         <h3>Please try to keep the difficulty easy</h3>
 
@@ -107,7 +107,7 @@ const QuizMaker = ({ firestore }) => {
               onSubmit={(e) => handleSubmit(e).then(form.restart)}
               noValidate
             >
-              <Paper elevation={3} style={{ padding: 10 }}>
+              <Paper elevation={3} style={{ padding: 10, background: '#ffe186'}}>
                 <Grid container alignItems="flex-start" spacing={2}>
                   <Grid item xs={12}>
                     <Field

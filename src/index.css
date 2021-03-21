@@ -1,6 +1,12 @@
 
+:root{
+  --primary-color: #18a08b;
+  --secondary-color: #ffe186;
+}
+
+
 html{
-  background: gray;
+  background: var(--primary-color);
 }
 
 

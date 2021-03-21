@@ -41,7 +41,7 @@ function App() {
   return (
     <Router>
       <Container
-        maxWidth="sm"
+        maxWidth="md"
         style={{
           minHeight: "100vh",
           display: "flex",
@@ -52,9 +52,14 @@ function App() {
       >
         {user && <HomeButton />}
         <Box
-          bgcolor="#20821e"
           py="30px"
-          style={{ width: "80%", minWidth: "300px" }}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            width: "80%",
+            minWidth: "300px",
+            justifyContent: "center",
+          }}
         >
           <Switch>
             <Route exact path="/">
@@ -124,11 +129,7 @@ function OptionsMenu({ user: { displayName, isAnonymous } }) {
 function HomeButton() {
   return (
     <Link to="/">
-      <Button
-        variant="contained"
-        color="primary"
-        style={{ position: "absolute", top: 20, left: 20 }}
-      >
+      <Button variant="contained" color="primary" className="home-button">
         Home
       </Button>
     </Link>
