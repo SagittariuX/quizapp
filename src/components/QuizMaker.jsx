@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import "firebase/firestore";
 
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -15,16 +15,33 @@ import {
 } from "@material-ui/core";
 
 const QuizMaker = ({ firestore }) => {
-  // const questionRef = firestore.collection("Questions");
-  // const query = questionRef.orderBy("id", "desc").limit(1);
-  // const [question] = useCollectionData(query); //keeps track of the latest question
+  const questionRef = firestore.collection("Questions");
+  const query = questionRef.orderBy("id", "desc").limit(1);
+  const [latestQuestion] = useCollectionData(query); //keeps track of the latest question
   //Need this to set proper id
 
   const [haveSubmitted, setHaveSubmitted] = useState(false);
 
-  const onSubmit = async(e) => {
-    console.log(e);
-    // setHaveSubmitted(true);
+  const onSubmit = async ({
+    question,
+    choice0,
+    choice1,
+    choice2,
+    choice3,
+    answer,
+    id,
+  }) => {
+    const questionRef = firestore
+      .collection("Questions")
+      .add({
+        question: question,
+        answer: answer,
+        choices: [choice0, choice1, choice2, choice3],
+        id: id+1,
+      })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    setHaveSubmitted(true);
   };
 
   const validate = (values) => {
@@ -77,17 +94,19 @@ const QuizMaker = ({ firestore }) => {
   if (true && !haveSubmitted)
     return (
       <>
-        <h3>
-          Please make your question is related to or about computer science
-        </h3>
+        <h3>Please make your question related to or about computer science</h3>
         <h3>This is just a casual application</h3>
         <h3>Please try to keep the difficulty easy</h3>
 
         <Form
           onSubmit={onSubmit}
+          initialValues={{ id: latestQuestion && latestQuestion[0].id }}
           validate={validate}
-          render={({ handleSubmit, form}) => (
-            <form onSubmit={e => handleSubmit(e).then(form.restart)} noValidate>
+          render={({ handleSubmit, form }) => (
+            <form
+              onSubmit={(e) => handleSubmit(e).then(form.restart)}
+              noValidate
+            >
               <Paper elevation={3} style={{ padding: 10 }}>
                 <Grid container alignItems="flex-start" spacing={2}>
                   <Grid item xs={12}>
@@ -165,10 +184,19 @@ const QuizMaker = ({ firestore }) => {
         />
       </>
     );
-  if(true && haveSubmitted)
+  if (true && haveSubmitted)
     return (
-      <div>Submitted</div>
-    )
+      <>
+        <div>Thank you for your submission</div>
+        <Button
+          type="button"
+          variant="contained"
+          onClick={() => setHaveSubmitted(false)}
+        >
+          Make another question
+        </Button>
+      </>
+    );
   return <div>Loading...</div>;
 };
 
