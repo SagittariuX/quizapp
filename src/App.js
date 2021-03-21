@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Box, Button, Container, Grid } from "@material-ui/core";
+import { Box, Button, Container } from "@material-ui/core";
 import {
   BrowserRouter as Router,
   Switch,
@@ -39,12 +39,14 @@ function App() {
   const [user] = useAuthState(auth);
 
   return (
-    <Grid
-      container
-      justify="center"
-      alignItems="center"
-      direction="column"
-      style={{ minHeight: "100vh" }}
+    <Container
+      maxWidth="sm"
+      style={{
+        minHeight: "100vh",
+        display: "flex",
+        justifyContent: "center",
+        alignContent: "center",
+      }}
       className="App"
     >
       <Router>
@@ -78,7 +80,7 @@ function App() {
           </Switch>
         </Box>
       </Router>
-    </Grid>
+    </Container>
   );
 }
 
