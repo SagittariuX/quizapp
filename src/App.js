@@ -12,7 +12,7 @@ import {
 //My components
 import QuizPage from "./components/QuizPage";
 import QuizMaker from "./components/QuizMaker";
-import { SignIn, SignOut } from "./components/AuthButtons";
+import { SignIn, SignOut, AnonSignIn } from "./components/AuthButtons";
 
 //Firebase sdk
 import firebase from "firebase/app";
@@ -39,17 +39,18 @@ function App() {
   const [user] = useAuthState(auth);
 
   return (
-    <Container
-      maxWidth="sm"
-      style={{
-        minHeight: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignContent: "center",
-      }}
-      className="App"
-    >
-      <Router>
+    <Router>
+      <Container
+        maxWidth="sm"
+        style={{
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignContent: "center",
+        }}
+        className="App"
+      >
+        {user && <HomeButton />}
         <Box
           bgcolor="#20821e"
           py="30px"
@@ -57,8 +58,17 @@ function App() {
         >
           <Switch>
             <Route exact path="/">
-              {!user && <SignIn auth={auth} />}
-              {user && <OptionsMenu user={user} />}
+              {!user && (
+                <>
+                  <SignIn auth={auth} />
+                  <AnonSignIn auth={auth} />
+                </>
+              )}
+              {user && (
+                <>
+                  <OptionsMenu user={user} />
+                </>
+              )}
             </Route>
             {/* Protected Routes */}
             {user ? (
@@ -79,12 +89,12 @@ function App() {
             )}
           </Switch>
         </Box>
-      </Router>
-    </Container>
+      </Container>
+    </Router>
   );
 }
 
-function OptionsMenu({ user: { displayName } }) {
+function OptionsMenu({ user: { displayName, isAnonymous } }) {
   return (
     <>
       <h1>Hello {displayName}</h1>
@@ -98,14 +108,30 @@ function OptionsMenu({ user: { displayName } }) {
           </Button>
         </Link>
       </Box>
-      <Box>
-        <Link to="/create">
-          <Button variant="contained" color="primary">
-            Create a Question
-          </Button>
-        </Link>
-      </Box>
+      {!isAnonymous && (
+        <Box>
+          <Link to="/create">
+            <Button variant="contained" color="primary">
+              Create a Question
+            </Button>
+          </Link>
+        </Box>
+      )}
     </>
+  );
+}
+
+function HomeButton() {
+  return (
+    <Link to="/">
+      <Button
+        variant="contained"
+        color="primary"
+        style={{ position: "absolute", top: 20, left: 20 }}
+      >
+        Home
+      </Button>
+    </Link>
   );
 }
 

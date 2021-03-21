@@ -5,7 +5,7 @@ import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
 import "./css/QuizPage.css";
 import { Box, Button, ButtonGroup } from "@material-ui/core";
 
-const QuizPage = ({ user, auth, firestore }) => {
+const QuizPage = ({ firestore }) => {
   const questionRef = firestore.collection("Questions");
   const query = questionRef.limit(10);
 
@@ -27,15 +27,15 @@ const QuizPage = ({ user, auth, firestore }) => {
           <div>It's Quiz Time</div>
           <div>Question #{count + 1}</div>
           <div>{questions[count].question}</div>
-          {questions[count].choices.map((c, i) => (
-            <Box key={i}>
+          {questions[count].choices.map((choice, index) => (
+            <Box key={index}>
               <Button
                 style={{ textTransform: "none" }}
                 variant="contained"
                 color="primary"
                 onClick={handleSelection}
               >
-                {c}
+                {choice}
               </Button>
             </Box>
           ))}

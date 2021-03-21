@@ -16,6 +16,19 @@ function SignIn({auth}) {
   );
 }
 
+function AnonSignIn({auth}){
+  const signInAnon = () => {
+    firebase.auth().signInAnonymously()
+    .then((res) => console.log('Welcome Guest'))
+    .catch((err) => console.log("error" , err))
+  }
+  return (
+    <Button variant="contained" onClick={signInAnon}>
+      Sign In As Guest
+    </Button>
+  );
+}
+
 function SignOut({ auth }) {
   return (
     auth.currentUser && (
@@ -31,4 +44,4 @@ function SignOut({ auth }) {
   );
 };
 
-export { SignIn, SignOut };
+export { SignIn, SignOut , AnonSignIn};
