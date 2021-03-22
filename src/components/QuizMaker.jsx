@@ -107,8 +107,11 @@ const QuizMaker = ({ firestore }) => {
               onSubmit={(e) => handleSubmit(e).then(form.restart)}
               noValidate
             >
-              <Paper elevation={3} style={{ padding: 10, background: '#ffe186'}}>
-                <Grid container alignItems="flex-start" spacing={2}>
+              <Paper
+                elevation={3}
+                style={{ padding: 10, background: "#ffe186" }}
+              >
+                <Grid container alignItems="flex-start" spacing={2} xs={12}>
                   <Grid item xs={12}>
                     <Field
                       fullWidth
@@ -162,21 +165,23 @@ const QuizMaker = ({ firestore }) => {
                       component={TextField}
                     />
                   </Grid>
-
-                  <Grid item xs={6}>
-                    <Button
-                      type="button"
-                      variant="contained"
-                      onClick={form.restart}
-                    >
-                      Reset
-                    </Button>
-                  </Grid>
-                  <Grid item xs={6}>
-                    <Button type="submit" variant="contained" color="primary">
-                      Submit
-                    </Button>
-                  </Grid>
+                  
+                    <Grid item xs={6}>
+                      <Button
+                        type="button"
+                        variant="contained"
+                        onClick={form.restart}
+                        className='create-btns'
+                      >
+                        Reset
+                      </Button>
+                    </Grid>
+                    <Grid item xs={6}>
+                      <Button type="submit" variant="contained" color="primary" className='create-btns'>
+                        Submit
+                      </Button>
+                    </Grid>
+                  
                 </Grid>
               </Paper>
             </form>

@@ -3,6 +3,10 @@ button{
     min-width: 200px !important;
 }
 
+.create-btns{
+    min-width: unset !important;
+}
+
 svg {
     max-width: 200px;
     max-height: 200px;
